@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>725290060888-noheeic4g36mluej2p12uv6k9uobc5rb.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.725290060888-noheeic4g36mluej2p12uv6k9uobc5rb</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBZgo2_S68zH4je1l31NaBBaibi0JuKmL0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>725290060888</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>de.isi.isiphe</string>
+	<key>PROJECT_ID</key>
+	<string>isiphe-ea265</string>
+	<key>STORAGE_BUCKET</key>
+	<string>isiphe-ea265.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:725290060888:ios:e6d8cf439f2e81e98a0e2d</string>
+</dict>
+</plist>
