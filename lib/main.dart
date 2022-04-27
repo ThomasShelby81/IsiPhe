@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isiphe/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:isiphe/blocs/currentdate_bloc/currentdate_bloc_bloc.dart';
 import 'package:isiphe/screens/dashboard.dart';
 import 'package:isiphe/screens/login/login_screen.dart';
 import 'package:isiphe/user_repository/user_repository.dart';
@@ -50,7 +51,10 @@ class MyApp extends StatelessWidget {
             return LoginScreen(userRepository: _userRepository);
           }
           if (state is AuthenticationSuccess) {
-            return Dashboard(user: state.user);
+            return BlocProvider(
+              create: (context) => CurrentDateBloc(),
+              child: Dashboard(user: state.user),
+            );
           }
           return Scaffold(
             appBar: AppBar(),
