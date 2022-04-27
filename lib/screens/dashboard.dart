@@ -19,9 +19,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
-  late Animation<double> _animation;
-  late AnimationController _animationController;
-
   var renderOverlay = true;
   var visible = true;
   var switchLabelPosition = false;
@@ -36,18 +33,11 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
   var selectedFloatingActionButtonLocation =
       FloatingActionButtonLocation.centerDocked;
   var customDialRoot = false;
-  var _selectedDate;
   final _dateFormat = DateFormat('dd.MM.yyyy');
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
-    _animation =
-        CurvedAnimation(parent: _animationController, curve: Curves.linear);
-
-    _selectedDate = DateTime.now();
 
     context.read<CurrentDateBloc>().add(DateInitial());
   }
@@ -55,7 +45,6 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    _animationController.dispose();
   }
 
   @override
