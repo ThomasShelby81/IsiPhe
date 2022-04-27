@@ -103,9 +103,7 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
               child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
                 builder: (context, state) {
                   var dateString = _dateFormat.format(state.date);
-                  if (state.date.day == DateTime.now().day &&
-                      state.date.month == DateTime.now().month &&
-                      state.date.year == state.date.year) {
+                  if (isCurrentDate(state.date)) {
                     dateString = 'Heute';
                   }
 
@@ -302,5 +300,11 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings')
       ]),
     );
+  }
+
+  bool isCurrentDate(DateTime date) {
+    return date.day == DateTime.now().day &&
+        date.month == DateTime.now().month &&
+        date.year == DateTime.now().year;
   }
 }
