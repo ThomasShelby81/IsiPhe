@@ -6,6 +6,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:isiphe/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:isiphe/blocs/currentdate_bloc/currentdate_bloc_bloc.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class Dashboard extends StatefulWidget {
   final User user;
@@ -135,6 +136,58 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     ),
                   ]),
             ),
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueAccent),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
+                margin: const EdgeInsets.all(1),
+                padding: const EdgeInsets.all(5),
+                child: Column(children: [
+                  const Text('Phe Budget'),
+                  const Text(
+                    '2.125',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: SleekCircularSlider(
+                      min: 0,
+                      max: 100,
+                      initialValue: 50,
+                      appearance: const CircularSliderAppearance(
+                        spinnerMode: false,
+                        size: 250,
+                        angleRange: 360.0,
+                        startAngle: 135,
+                        animationEnabled: true,
+                      ),
+                      innerWidget: (double value) {
+                        return Column(
+                          children: <Widget>[
+                            const SizedBox(height: 100),
+                            Container(
+                                child: Column(
+                              children: [
+                                Text(
+                                  NumberFormat.decimalPattern('de')
+                                      .format(value),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 40),
+                                ),
+                                const Text(
+                                  'Phe übrig',
+                                  style: TextStyle(color: Colors.grey),
+                                )
+                              ],
+                            )),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ])),
             Container(
               margin: const EdgeInsets.all(1),
               padding: const EdgeInsets.all(30),
