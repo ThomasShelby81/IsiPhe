@@ -123,6 +123,16 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                             .add(DateDecrementedByOneDay());
                       },
                     ),
+                    BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
+                      builder: (context, state) {
+                        var dateString = _dateFormat.format(state.date);
+                        if (isCurrentDate(state.date)) {
+                          dateString = 'Heute';
+                        }
+
+                        return Text(dateString);
+                      },
+                    ),
                     GestureDetector(
                       child: Container(
                           padding: const EdgeInsets.only(right: 50),
