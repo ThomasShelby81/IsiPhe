@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:isiphe/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:isiphe/blocs/currentdate_bloc/currentdate_bloc_bloc.dart';
 import 'package:isiphe/screens/dashboard.dart';
@@ -41,6 +42,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       title: 'Isi Phe',
       theme: ThemeData(
+          textTheme: TextTheme(
+            headline1: GoogleFonts.lato(
+                fontSize: 16,
+                textStyle: TextStyle(
+                    color: Colors.grey.shade400, fontWeight: FontWeight.bold)),
+            headline2: GoogleFonts.lato(
+                fontSize: 20,
+                textStyle: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold)),
+          ),
           primaryColor: const Color(0xff6a515e),
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Color(0xff6a515e),

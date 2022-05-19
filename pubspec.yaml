@@ -43,6 +43,7 @@ dependencies:
   calendar_timeline: ^1.0.4
   intl: ^0.17.0
   sleek_circular_slider: ^2.0.1
+  google_fonts: ^2.3.2
 
 dev_dependencies:
   flutter_test:

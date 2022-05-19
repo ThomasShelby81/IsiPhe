@@ -6,6 +6,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:isiphe/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:isiphe/blocs/currentdate_bloc/currentdate_bloc_bloc.dart';
+import 'package:isiphe/widgets/meal.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class Dashboard extends StatefulWidget {
@@ -92,12 +93,7 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             Center(
               child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
                 builder: (context, state) {
-                  var dateString = _dateFormat.format(state.date);
-                  if (isCurrentDate(state.date)) {
-                    dateString = 'Heute';
-                  }
-
-                  return Text('Hello, ${widget.user.email} Date: $dateString');
+                  return Text('Hello, ${widget.user.email}');
                 },
               ),
             ),
@@ -111,6 +107,7 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
               */
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
                       child: Container(
@@ -130,7 +127,10 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                           dateString = 'Heute';
                         }
 
-                        return Text(dateString);
+                        return Text(
+                          dateString,
+                          style: Theme.of(context).textTheme.headline1,
+                        );
                       },
                     ),
                     GestureDetector(
@@ -152,52 +152,13 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     borderRadius: const BorderRadius.all(Radius.circular(10))),
                 margin: const EdgeInsets.all(1),
                 padding: const EdgeInsets.all(5),
-                child: Column(children: [
-                  const Text('Phe Budget'),
-                  const Text(
-                    '2.125',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: SleekCircularSlider(
-                      min: 0,
-                      max: 100,
-                      initialValue: 50,
-                      appearance: const CircularSliderAppearance(
-                        spinnerMode: false,
-                        size: 250,
-                        angleRange: 360.0,
-                        startAngle: 135,
-                        animationEnabled: true,
-                      ),
-                      innerWidget: (double value) {
-                        return Column(
-                          children: <Widget>[
-                            const SizedBox(height: 100),
-                            Container(
-                                child: Column(
-                              children: [
-                                Text(
-                                  NumberFormat.decimalPattern('de')
-                                      .format(value),
-                                  style: const TextStyle(
-                                      color: Colors.black, fontSize: 40),
-                                ),
-                                const Text(
-                                  'Phe übrig',
-                                  style: TextStyle(color: Colors.grey),
-                                )
-                              ],
-                            )),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ])),
+                child: Stack(
+                  children: [
+                    _buildLeftRow(),
+                    _buildCentralWidget(),
+                    _buildRightWidget()
+                  ],
+                )),
             Container(
               margin: const EdgeInsets.all(1),
               padding: const EdgeInsets.all(30),
@@ -358,5 +319,96 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
     return date.day == DateTime.now().day &&
         date.month == DateTime.now().month &&
         date.year == DateTime.now().year;
+  }
+
+  _buildLeftRow() {
+    return Positioned(
+        left: 5,
+        child: Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(18)),
+          constraints: const BoxConstraints(
+            maxWidth: 100,
+          ),
+          child: Text(
+            'letzter\nWert',
+            style: Theme.of(context).textTheme.headline1,
+          ),
+        ));
+  }
+
+  _buildCentralWidget() {
+    return Positioned(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Phe Budget',
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            Text(
+              '2.125',
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: SleekCircularSlider(
+                min: 0,
+                max: 100,
+                initialValue: 50,
+                appearance: CircularSliderAppearance(
+                    spinnerMode: false,
+                    size: 200,
+                    angleRange: 360.0,
+                    startAngle: 135,
+                    animationEnabled: true,
+                    customWidths: CustomSliderWidths(progressBarWidth: 10)),
+                innerWidget: (double value) {
+                  return Column(
+                    children: <Widget>[
+                      const SizedBox(height: 70),
+                      Container(
+                          child: Column(
+                        children: [
+                          Text(
+                            NumberFormat.decimalPattern('de').format(value),
+                            style: TextStyle(
+                                color: Colors.grey.shade400, fontSize: 40),
+                          ),
+                          const Text(
+                            'Phe übrig',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
+                      )),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ]),
+    );
+  }
+
+  _buildRightWidget() {
+    return Positioned(
+      right: 5,
+      child: Container(
+        /**decoration: BoxDecoration(
+            border: Border.all(color: Colors.blueAccent),
+            borderRadius: const BorderRadius.all(Radius.circular(10))),*/
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            Meal(name: 'Frühstück', phe: 0),
+            Meal(name: 'Mittag', phe: 0),
+            Meal(name: 'Abend', phe: 0),
+            Meal(name: 'Snacks', phe: 0),
+          ],
+        ),
+      ),
+    );
   }
 }
