@@ -122,8 +122,8 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     ),
                     BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
                       builder: (context, state) {
-                        var dateString = _dateFormat.format(state.date);
-                        if (isCurrentDate(state.date)) {
+                        var dateString = _dateFormat.format(state.summary.date);
+                        if (isCurrentDate(state.summary.date)) {
                           dateString = 'Heute';
                         }
 
@@ -170,7 +170,7 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
               child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
                 builder: (context, state) {
                   return CalendarTimeline(
-                    initialDate: state.date,
+                    initialDate: state.summary.date,
                     firstDate:
                         DateTime.now().subtract(const Duration(days: 365)),
                     lastDate: DateTime.now().add(const Duration(days: 365)),
@@ -346,44 +346,52 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
               'Phe Budget',
               style: Theme.of(context).textTheme.headline1,
             ),
-            Text(
-              '2.125',
-              style: Theme.of(context).textTheme.headline2,
+            BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
+              builder: (context, state) {
+                return Text(
+                  state.summary.pheBudget.toString(),
+                  style: Theme.of(context).textTheme.headline2,
+                );
+              },
             ),
             const SizedBox(
               height: 20,
             ),
             Center(
-              child: SleekCircularSlider(
-                min: 0,
-                max: 100,
-                initialValue: 50,
-                appearance: CircularSliderAppearance(
-                    spinnerMode: false,
-                    size: 200,
-                    angleRange: 360.0,
-                    startAngle: 135,
-                    animationEnabled: true,
-                    customWidths: CustomSliderWidths(progressBarWidth: 10)),
-                innerWidget: (double value) {
-                  return Column(
-                    children: <Widget>[
-                      const SizedBox(height: 70),
-                      Container(
-                          child: Column(
-                        children: [
-                          Text(
-                            NumberFormat.decimalPattern('de').format(value),
-                            style: TextStyle(
-                                color: Colors.grey.shade400, fontSize: 40),
-                          ),
-                          const Text(
-                            'Phe übrig',
-                            style: TextStyle(color: Colors.grey),
-                          )
+              child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
+                builder: (context, state) {
+                  return SleekCircularSlider(
+                    min: 0,
+                    max: 100,
+                    initialValue: state.summary.phe,
+                    appearance: CircularSliderAppearance(
+                        spinnerMode: false,
+                        size: 200,
+                        angleRange: 360.0,
+                        startAngle: 135,
+                        animationEnabled: true,
+                        customWidths: CustomSliderWidths(progressBarWidth: 10)),
+                    innerWidget: (double value) {
+                      return Column(
+                        children: <Widget>[
+                          const SizedBox(height: 70),
+                          Container(
+                              child: Column(
+                            children: [
+                              Text(
+                                NumberFormat.decimalPattern('de').format(value),
+                                style: TextStyle(
+                                    color: Colors.grey.shade400, fontSize: 40),
+                              ),
+                              const Text(
+                                'Phe übrig',
+                                style: TextStyle(color: Colors.grey),
+                              )
+                            ],
+                          )),
                         ],
-                      )),
-                    ],
+                      );
+                    },
                   );
                 },
               ),
@@ -399,14 +407,18 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
         /**decoration: BoxDecoration(
             border: Border.all(color: Colors.blueAccent),
             borderRadius: const BorderRadius.all(Radius.circular(10))),*/
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Meal(name: 'Frühstück', phe: 0),
-            Meal(name: 'Mittag', phe: 0),
-            Meal(name: 'Abend', phe: 0),
-            Meal(name: 'Snacks', phe: 0),
-          ],
+        child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
+          builder: (context, state) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Meal(name: 'Frühstück', phe: state.summary.breakfast),
+                Meal(name: 'Mittag', phe: state.summary.lunch),
+                Meal(name: 'Abend', phe: state.summary.dinner),
+                Meal(name: 'Snacks', phe: state.summary.snacks),
+              ],
+            );
+          },
         ),
       ),
     );

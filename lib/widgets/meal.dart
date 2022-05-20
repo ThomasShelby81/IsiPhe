@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Meal extends StatelessWidget {
   final String name;
-  final int phe;
+  final double phe;
 
   const Meal({Key? key, required this.name, required this.phe})
       : super(key: key);

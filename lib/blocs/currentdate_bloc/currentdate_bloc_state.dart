@@ -1,18 +1,18 @@
 part of 'currentdate_bloc_bloc.dart';
 
 abstract class CurrentDateBlocState extends Equatable {
-  final DateTime date;
+  final Summary summary;
 
-  const CurrentDateBlocState(this.date);
+  const CurrentDateBlocState(this.summary);
 
   @override
-  List<Object> get props => [date];
+  List<Object> get props => [summary];
 }
 
 class CurrentDateBlocStateInitial extends CurrentDateBlocState {
-  CurrentDateBlocStateInitial() : super(DateTime.now());
+  CurrentDateBlocStateInitial() : super(Summary(DateTime.now(), 50, 400));
 }
 
 class CurrentDateBlocStateChanged extends CurrentDateBlocState {
-  const CurrentDateBlocStateChanged(DateTime date) : super(date);
+  const CurrentDateBlocStateChanged(Summary summary) : super(summary);
 }
