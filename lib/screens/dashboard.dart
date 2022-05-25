@@ -1,7 +1,7 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:isiphe/blocs/authentication_bloc/authentication_bloc.dart';
@@ -53,8 +53,11 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 3,
+      appBar: NeumorphicAppBar(
+        buttonPadding: const EdgeInsets.all(10),
+        centerTitle: true,
+        color: Colors.grey[300],
+        buttonStyle: const NeumorphicStyle(),
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
             icon: const Icon(Icons.menu),
@@ -66,7 +69,6 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             style: TextStyle(
               color: Colors.white,
             )),
-        backgroundColor: Colors.green,
         actions: <Widget>[
           IconButton(
             icon: const CircleAvatar(
@@ -75,14 +77,6 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             ),
             onPressed: () => debugPrint('pressed'),
           ),
-          /**
-          IconButton(
-              icon: const Icon(Icons.exit_to_app),
-              onPressed: () {
-                BlocProvider.of<AuthenticationBloc>(context)
-                    .add(AuthenticationLoggedOut());
-              })
-               */
         ],
       ),
       body: Padding(
@@ -112,8 +106,10 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     GestureDetector(
                       child: Container(
                           padding: const EdgeInsets.only(left: 50),
-                          child: const Icon(
-                              Icons.keyboard_double_arrow_left_outlined)),
+                          child: NeumorphicIcon(
+                            Icons.keyboard_double_arrow_left_outlined,
+                            size: 80,
+                          )),
                       onTap: () {
                         context
                             .read<CurrentDateBloc>()
@@ -126,18 +122,25 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                         if (isCurrentDate(state.summary.date)) {
                           dateString = 'Heute';
                         }
-
-                        return Text(
+                        return NeumorphicText(
                           dateString,
-                          style: Theme.of(context).textTheme.headline1,
+                          style: const NeumorphicStyle(
+                            depth: 4,
+                            color: Colors.grey,
+                          ),
+                          textStyle: NeumorphicTextStyle(
+                            fontSize: 18,
+                          ),
                         );
                       },
                     ),
                     GestureDetector(
                       child: Container(
                           padding: const EdgeInsets.only(right: 50),
-                          child: const Icon(
-                              Icons.keyboard_double_arrow_right_outlined)),
+                          child: NeumorphicIcon(
+                            Icons.keyboard_double_arrow_right_outlined,
+                            size: 80,
+                          )),
                       onTap: () {
                         context
                             .read<CurrentDateBloc>()
@@ -146,10 +149,7 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     ),
                   ]),
             ),
-            Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueAccent),
-                    borderRadius: const BorderRadius.all(Radius.circular(10))),
+            Neumorphic(
                 margin: const EdgeInsets.all(1),
                 padding: const EdgeInsets.all(5),
                 child: Stack(
@@ -159,7 +159,8 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     _buildRightWidget()
                   ],
                 )),
-            Container(
+            const SizedBox(height: 10),
+            Neumorphic(
               margin: const EdgeInsets.all(1),
               padding: const EdgeInsets.all(30),
               /**
@@ -192,20 +193,14 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
           ],
         ),
       ),
-      /**
-      floatingActionButton: FloatingActionButton(
-          onPressed: () => debugPrint("pressed"),
-          child: AnimatedIcon(
-            icon: AnimatedIcons.add_event,
-            progress: _animation,
-          )),
-      */
       floatingActionButton: SpeedDial(
         // animatedIcon: AnimatedIcons.menu_close,
         // animatedIconTheme: IconThemeData(size: 22.0),
         // / This is ignored if animatedIcon is non null
         // child: Text("open"),
         // activeChild: Text("close"),
+
+        backgroundColor: Colors.grey[300],
         icon: Icons.add,
         activeIcon: Icons.close,
         spacing: 3,

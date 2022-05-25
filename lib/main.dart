@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isiphe/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:isiphe/blocs/currentdate_bloc/currentdate_bloc_bloc.dart';
@@ -37,25 +37,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return NeumorphicApp(
       showPerformanceOverlay: false,
       debugShowCheckedModeBanner: true,
       title: 'Isi Phe',
-      theme: ThemeData(
-          textTheme: TextTheme(
-            headline1: GoogleFonts.lato(
-                fontSize: 16,
-                textStyle: TextStyle(
-                    color: Colors.grey.shade400, fontWeight: FontWeight.bold)),
-            headline2: GoogleFonts.lato(
-                fontSize: 20,
-                textStyle: const TextStyle(
-                    color: Colors.blue, fontWeight: FontWeight.bold)),
-          ),
-          primaryColor: const Color(0xff6a515e),
+      themeMode: ThemeMode.light,
+      theme: NeumorphicThemeData(
+        textTheme: TextTheme(
+          headline1: GoogleFonts.lato(
+              fontSize: 16,
+              textStyle: TextStyle(
+                  color: Colors.grey.shade400, fontWeight: FontWeight.bold)),
+          headline2: GoogleFonts.lato(
+              fontSize: 20,
+              textStyle: const TextStyle(
+                  color: Colors.blue, fontWeight: FontWeight.bold)),
+        ),
+        lightSource: LightSource.topLeft,
+        depth: 10,
+        baseColor: const Color(0xFFFFFFFF),
+        /**
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Color(0xff6a515e),
-          )),
+          )*/
+      ),
+      darkTheme: const NeumorphicThemeData(
+        baseColor: Color(0xFF3E3E3E),
+        lightSource: LightSource.topLeft,
+        depth: 6,
+      ),
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationFailure || state is AuthenticationLogout) {
