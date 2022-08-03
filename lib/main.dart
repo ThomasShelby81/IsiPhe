@@ -2,37 +2,55 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:isiphe/blocs/authentication_bloc/authentication_bloc.dart';
-import 'package:isiphe/blocs/currentdate_bloc/currentdate_bloc_bloc.dart';
+import 'package:isiphe/repository/meals_repository.dart';
+import 'package:isiphe/repository/user_repository.dart';
 import 'package:isiphe/screens/dashboard.dart';
 import 'package:isiphe/screens/login/login_screen.dart';
-import 'package:isiphe/user_repository/user_repository.dart';
+import 'package:isiphe/service/database_service.dart';
 
-import 'blocs/simple_bloc_observer.dart';
+import 'bloc/authentication_bloc/authentication_bloc.dart';
+import 'bloc/currentdate_bloc/currentdate_bloc_bloc.dart';
+import 'bloc/simple_bloc_observer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  Bloc.observer = SimpleBlocObserver();
+  var databaseService = DatabaseService();
+
   var userRepository = UserRepository();
-  runApp(
-    BlocProvider(
-      create: (context) => AuthenticationBloc(
-        userRepository: UserRepository(),
-      )..add(AuthenticationStarted()),
-      child: MyApp(
-        userRepository: userRepository,
-      ),
-    ),
-  );
+  var mealsRepository = MealsRepositoryImpl(databaseService);
+
+  BlocOverrides.runZoned(
+      () => runApp(MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => AuthenticationBloc(
+                    userRepository: UserRepository(),
+                  )..add(AuthenticationStarted()),
+                  child: MyApp(
+                    userRepository: userRepository,
+                    mealsRepository: mealsRepository,
+                  ),
+                ),
+              ],
+              child: MyApp(
+                userRepository: userRepository,
+                mealsRepository: mealsRepository,
+              ))),
+      blocObserver: SimpleBlocObserver());
 }
 
 class MyApp extends StatelessWidget {
   final UserRepository _userRepository;
+  final MealsRepository _mealsRepository;
 
-  const MyApp({Key? key, required UserRepository userRepository})
+  const MyApp(
+      {Key? key,
+      required UserRepository userRepository,
+      required MealsRepository mealsRepository})
       : _userRepository = userRepository,
+        _mealsRepository = mealsRepository,
         super(key: key);
 
   @override
@@ -73,7 +91,7 @@ class MyApp extends StatelessWidget {
           }
           if (state is AuthenticationSuccess) {
             return BlocProvider(
-              create: (context) => CurrentDateBloc(),
+              create: (context) => CurrentDateBloc(_mealsRepository),
               child: Dashboard(user: state.user),
             );
           }

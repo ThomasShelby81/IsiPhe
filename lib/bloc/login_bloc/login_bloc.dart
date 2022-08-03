@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:isiphe/user_repository/user_repository.dart';
 import 'package:isiphe/utils/validators.dart';
+
+import '../../repository/user_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -14,8 +15,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   LoginBloc({required UserRepository userRepository})
       : _userRepository = userRepository,
-        super(LoginState.initial());
+        super(LoginState.initial()) {
+    on<LoginEmailChange>(_mailChanged);
+    on<LoginPasswordChange>(_passwordChanged);
+    on<LoginWithCredentials>(_login);
+  }
 
+/**
   @override
   Stream<LoginState> mapEventToState(
     LoginEvent event,
@@ -29,7 +35,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Stream<LoginState> _mapLoginEmailChangeToState(String email) async* {
+Stream<LoginState> _mapLoginEmailChangeToState(String email) async* {
     yield state.update(
         isEmailValid: Validators.isValidMail(email), isPasswordValid: true);
   }
@@ -52,6 +58,36 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print(error);
       }
       yield LoginState.failure();
+    }
+  }
+
+ */
+
+  FutureOr<void> _mailChanged(
+      LoginEmailChange event, Emitter<LoginState> emit) {
+    emit(state.update(
+        isEmailValid: Validators.isValidMail(event.email),
+        isPasswordValid: true));
+  }
+
+  FutureOr<void> _passwordChanged(
+      LoginPasswordChange event, Emitter<LoginState> emit) {
+    emit(state.update(
+        isEmailValid: true,
+        isPasswordValid: Validators.isValidPassword(event.password)));
+  }
+
+  FutureOr<void> _login(
+      LoginWithCredentials event, Emitter<LoginState> emit) async {
+    emit(LoginState.loading());
+    try {
+      await _userRepository.signInWithCredentials(event.email, event.password);
+      emit(LoginState.success());
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+      emit(LoginState.failure());
     }
   }
 }

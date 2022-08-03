@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
-import 'package:isiphe/blocs/authentication_bloc/authentication_bloc.dart';
-import 'package:isiphe/blocs/currentdate_bloc/currentdate_bloc_bloc.dart';
+import 'package:isiphe/enum/meal_type.dart';
 import 'package:isiphe/widgets/meal.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+
+import '../bloc/authentication_bloc/authentication_bloc.dart';
+import '../bloc/currentdate_bloc/currentdate_bloc_bloc.dart';
+import '../routes/pick_meal_route.dart';
 
 class Dashboard extends StatefulWidget {
   final User user;
@@ -129,7 +132,7 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                             color: Colors.grey,
                           ),
                           textStyle: NeumorphicTextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         );
                       },
@@ -184,7 +187,6 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     activeDayColor: Colors.white,
                     activeBackgroundDayColor: Colors.redAccent[100],
                     dotsColor: const Color(0xFF333A47),
-                    selectableDayPredicate: (date) => date.day != 23,
                     locale: 'en_ISO',
                   );
                 },
@@ -287,7 +289,14 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             label: 'Snack',
-            onTap: () => setState(() => rmicons = !rmicons),
+            onTap: () => setState(() => {
+                  rmicons = !rmicons,
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OpenMealRoute()),
+                  )
+                }),
             onLongPress: () => debugPrint('Snack CHILD LONG PRESS'),
           ),
           SpeedDialChild(
@@ -344,7 +353,7 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
               builder: (context, state) {
                 return Text(
-                  state.summary.pheBudget.toString(),
+                  state.summary.proteinBudget.toString(),
                   style: Theme.of(context).textTheme.headline2,
                 );
               },
@@ -358,7 +367,7 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                   return SleekCircularSlider(
                     min: 0,
                     max: 100,
-                    initialValue: state.summary.phe,
+                    initialValue: state.summary.restProteinPerDay,
                     appearance: CircularSliderAppearance(
                         spinnerMode: false,
                         size: 200,
@@ -407,10 +416,19 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Meal(name: 'Frühstück', phe: state.summary.breakfast),
-                Meal(name: 'Mittag', phe: state.summary.lunch),
-                Meal(name: 'Abend', phe: state.summary.dinner),
-                Meal(name: 'Snacks', phe: state.summary.snacks),
+                Meal(
+                    name: 'Frühstück',
+                    phe: state.summary
+                        .getProteinPerMealType(MealType.breakfast)),
+                Meal(
+                    name: 'Mittag',
+                    phe: state.summary.getProteinPerMealType(MealType.lunch)),
+                Meal(
+                    name: 'Abend',
+                    phe: state.summary.getProteinPerMealType(MealType.dinner)),
+                Meal(
+                    name: 'Snacks',
+                    phe: state.summary.getProteinPerMealType(MealType.snack)),
               ],
             );
           },
