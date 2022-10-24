@@ -20,4 +20,28 @@ class DatabaseService {
 
     return meals;
   }
+
+  Stream<List<Meal>> retrieveStreamMealsPerDay(DateTime date) {
+    DateTime fromDate = date;
+    DateTime toDate =
+        date.add(const Duration(hours: 23, minutes: 59, seconds: 59));
+
+    date = date.subtract(const Duration(days: 1));
+    Query query = _db
+        .collection('meals')
+        .where("date", isGreaterThanOrEqualTo: fromDate)
+        .where("date", isLessThanOrEqualTo: toDate);
+
+    final Stream<QuerySnapshot> snapshots = query.snapshots();
+
+    Stream<List<Meal>> stream = snapshots.map((snapshot) {
+      final result = snapshot.docs
+          .map((element) => Meal.fromDocumentSnapshot(
+              element as DocumentSnapshot<Map<String, dynamic>>))
+          .toList();
+      return result;
+    });
+
+    return stream;
+  }
 }

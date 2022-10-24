@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +8,11 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:isiphe/enum/meal_type.dart';
 import 'package:isiphe/widgets/meal.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 import '../bloc/authentication_bloc/authentication_bloc.dart';
 import '../bloc/currentdate_bloc/currentdate_bloc_bloc.dart';
-import '../routes/pick_meal_route.dart';
+import '../widgets/pick_meal_widget.dart';
 
 class Dashboard extends StatefulWidget {
   final User user;
@@ -265,7 +267,21 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             label: 'Frühstück',
-            onTap: () => setState(() => rmicons = !rmicons),
+            onTap: () => setState(() => {
+                  rmicons = !rmicons,
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    isDismissible: true,
+                    elevation: 10,
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    builder: (context) {
+                      return const PickMealWidget(MealType.breakfast);
+                    },
+                  )
+                }),
             onLongPress: () => debugPrint('Breakfast Child LONG PRESS'),
           ),
           SpeedDialChild(
@@ -273,7 +289,21 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             label: 'Mittag',
-            onTap: () => setState(() => rmicons = !rmicons),
+            onTap: () => setState(() => {
+                  rmicons = !rmicons,
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    isDismissible: true,
+                    elevation: 10,
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    builder: (context) {
+                      return const PickMealWidget(MealType.lunch);
+                    },
+                  )
+                }),
             onLongPress: () => debugPrint('Lunch CHILD LONG PRESS'),
           ),
           SpeedDialChild(
@@ -281,7 +311,21 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             label: 'Abendessen',
-            onTap: () => setState(() => rmicons = !rmicons),
+            onTap: () => setState(() => {
+                  rmicons = !rmicons,
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    isDismissible: true,
+                    elevation: 10,
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    builder: (context) {
+                      return const PickMealWidget(MealType.dinner);
+                    },
+                  )
+                }),
             onLongPress: () => debugPrint('Dinner CHILD LONG PRESS'),
           ),
           SpeedDialChild(
@@ -291,10 +335,17 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             label: 'Snack',
             onTap: () => setState(() => {
                   rmicons = !rmicons,
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OpenMealRoute()),
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    isDismissible: true,
+                    elevation: 10,
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    builder: (context) {
+                      return const PickMealWidget(MealType.snack);
+                    },
                   )
                 }),
             onLongPress: () => debugPrint('Snack CHILD LONG PRESS'),
@@ -304,7 +355,21 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             label: 'Scanner',
-            onTap: () => setState(() => rmicons = !rmicons),
+            onTap: () => setState(() => {
+                  rmicons = !rmicons,
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    isDismissible: true,
+                    elevation: 10,
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    builder: (context) {
+                      return const PickMealWidget(MealType.scanner);
+                    },
+                  )
+                }),
             onLongPress: () => debugPrint('Scanner CHILD LONG PRESS'),
           ),
         ],
@@ -364,38 +429,27 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             Center(
               child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
                 builder: (context, state) {
-                  return SleekCircularSlider(
-                    min: 0,
-                    max: 100,
-                    initialValue: state.summary.restProteinPerDay,
-                    appearance: CircularSliderAppearance(
-                        spinnerMode: false,
-                        size: 200,
-                        angleRange: 360.0,
-                        startAngle: 135,
-                        animationEnabled: true,
-                        customWidths: CustomSliderWidths(progressBarWidth: 10)),
-                    innerWidget: (double value) {
-                      return Column(
-                        children: <Widget>[
-                          const SizedBox(height: 70),
-                          Container(
-                              child: Column(
-                            children: [
-                              Text(
-                                NumberFormat.decimalPattern('de').format(value),
-                                style: TextStyle(
-                                    color: Colors.grey.shade400, fontSize: 40),
-                              ),
-                              const Text(
-                                'Phe übrig',
-                                style: TextStyle(color: Colors.grey),
-                              )
-                            ],
-                          )),
+                  return SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: CircularPercentIndicator(
+                      radius: 80,
+                      lineWidth: 5,
+                      percent: min(
+                          1,
+                          state.summary.proteinPerDay /
+                              state.summary.proteinBudget),
+                      center: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(state.summary.restProteinPerDay.toString(),
+                              style: const TextStyle(fontSize: 12)),
+                          const Text('Eiweiss übrig')
                         ],
-                      );
-                    },
+                      ),
+                      progressColor: Colors.green,
+                    ),
                   );
                 },
               ),
@@ -407,32 +461,26 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
   _buildRightWidget() {
     return Positioned(
       right: 5,
-      child: Container(
-        /**decoration: BoxDecoration(
-            border: Border.all(color: Colors.blueAccent),
-            borderRadius: const BorderRadius.all(Radius.circular(10))),*/
-        child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
-          builder: (context, state) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Meal(
-                    name: 'Frühstück',
-                    phe: state.summary
-                        .getProteinPerMealType(MealType.breakfast)),
-                Meal(
-                    name: 'Mittag',
-                    phe: state.summary.getProteinPerMealType(MealType.lunch)),
-                Meal(
-                    name: 'Abend',
-                    phe: state.summary.getProteinPerMealType(MealType.dinner)),
-                Meal(
-                    name: 'Snacks',
-                    phe: state.summary.getProteinPerMealType(MealType.snack)),
-              ],
-            );
-          },
-        ),
+      child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
+        builder: (context, state) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Meal(
+                  name: 'Frühstück',
+                  phe: state.summary.getProteinPerMealType(MealType.breakfast)),
+              Meal(
+                  name: 'Mittag',
+                  phe: state.summary.getProteinPerMealType(MealType.lunch)),
+              Meal(
+                  name: 'Abend',
+                  phe: state.summary.getProteinPerMealType(MealType.dinner)),
+              Meal(
+                  name: 'Snacks',
+                  phe: state.summary.getProteinPerMealType(MealType.snack)),
+            ],
+          );
+        },
       ),
     );
   }

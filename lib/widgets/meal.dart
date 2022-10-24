@@ -9,20 +9,18 @@ class Meal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        Text(
-          name,
-          style: Theme.of(context).textTheme.headline1,
-        ),
-        Text(
-          phe.toString(),
-          style: Theme.of(context).textTheme.headline2,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-      ]),
-    );
+    return Column(children: [
+      Text(
+        name,
+        style: Theme.of(context).textTheme.headline1,
+      ),
+      Text(
+        phe.toString(),
+        style: Theme.of(context).textTheme.headline2,
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+    ]);
   }
 }

@@ -22,6 +22,11 @@ class DateDecrementedByOneDay extends CurrentDateBlocEvent {
   List<Object> get props => [];
 }
 
+class WatchMeals extends CurrentDateBlocEvent {
+  @override
+  List<Object> get props => [];
+}
+
 class DateSelected extends CurrentDateBlocEvent {
   final DateTime newDate;
 
@@ -29,4 +34,14 @@ class DateSelected extends CurrentDateBlocEvent {
 
   @override
   List<Object> get props => [newDate];
+}
+
+class MealsPerDayChanged extends CurrentDateBlocEvent {
+  final DateTime date;
+  final List<Meal> mealsChanged;
+
+  const MealsPerDayChanged(this.date, this.mealsChanged);
+
+  @override
+  List<Object> get props => [date, mealsChanged];
 }

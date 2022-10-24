@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 import 'package:isiphe/enum/meal_type.dart';
 
 class Meal extends Equatable {
-  String id;
-  DateTime date;
-  double protein;
-  MealType mealType;
+  final String id;
+  final DateTime date;
+  final double protein;
+  final MealType mealType;
 
-  Meal(this.id, this.date, this.protein, this.mealType);
+  const Meal(this.id, this.date, this.protein, this.mealType);
 
   @override
   List<Object?> get props => [date, protein, mealType];

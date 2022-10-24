@@ -11,7 +11,7 @@ abstract class CurrentDateBlocState extends Equatable {
 
 class CurrentDateBlocStateInitial extends CurrentDateBlocState {
   CurrentDateBlocStateInitial()
-      : super(Summary(DateTime.now(), 6, List.empty()));
+      : super(Summary(DateTime.now().getDateOnly(), 6, List.empty()));
 }
 
 class CurrentDateBlocStateChanged extends CurrentDateBlocState {
