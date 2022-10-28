@@ -10,6 +10,7 @@ import 'package:isiphe/service/database_service.dart';
 
 import 'bloc/authentication_bloc/authentication_bloc.dart';
 import 'bloc/currentdate_bloc/currentdate_bloc_bloc.dart';
+import 'bloc/meal_bloc/bloc/meal_bloc.dart';
 import 'bloc/simple_bloc_observer.dart';
 
 Future<void> main() async {
@@ -90,9 +91,16 @@ class MyApp extends StatelessWidget {
             return LoginScreen(userRepository: _userRepository);
           }
           if (state is AuthenticationSuccess) {
-            return BlocProvider(
-              create: (context) => CurrentDateBloc(_mealsRepository),
-              child: Dashboard(user: state.user),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                    create: (context) => CurrentDateBloc(_mealsRepository)),
+                BlocProvider(create: (context) => MealBloc(_mealsRepository)),
+              ],
+              child: Dashboard(
+                user: state.user,
+                mealsRepository: _mealsRepository,
+              ),
             );
           }
           return Scaffold(

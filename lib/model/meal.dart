@@ -13,9 +13,16 @@ class Meal extends Equatable {
   @override
   List<Object?> get props => [date, protein, mealType];
 
-  Meal fromJson(Map<String, dynamic> json) {
-    return Meal(
-        json['id'], json['date'], json['phe'], getValueBy(json['type']));
+  factory Meal.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options) {
+    final data = snapshot.data();
+
+    return Meal(snapshot.id, data?['date'].toDate(),
+        data?['protein'].toDouble(), getMealTypeByValue(data?['type']));
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {'date': date, 'protein': protein, 'type': mealType.name};
   }
 
   MealType getValueBy(String v) {
@@ -26,17 +33,6 @@ class Meal extends Equatable {
     }
     return MealType.snack;
   }
-
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'date': date, 'phe': protein, 'type': mealType.name};
-  }
-
-  Meal.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc)
-      : id = doc.id,
-        date = DateTime.fromMicrosecondsSinceEpoch(
-            doc.data()!['date'].microsecondsSinceEpoch),
-        protein = doc.data()!['protein'].toDouble(),
-        mealType = getMealTypeByValue(doc.data()!['type']);
 
   static getMealTypeByValue(value) {
     for (var v in MealType.values) {

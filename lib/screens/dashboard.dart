@@ -6,7 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
+import 'package:isiphe/bloc/meal_bloc/bloc/meal_bloc.dart';
 import 'package:isiphe/enum/meal_type.dart';
+import 'package:isiphe/repository/meals_repository.dart';
 import 'package:isiphe/widgets/meal.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -16,8 +18,10 @@ import '../widgets/pick_meal_widget.dart';
 
 class Dashboard extends StatefulWidget {
   final User user;
+  final MealsRepository mealsRepository;
 
-  const Dashboard({Key? key, required this.user}) : super(key: key);
+  const Dashboard({Key? key, required this.user, required this.mealsRepository})
+      : super(key: key);
 
   @override
   _Dashboard createState() {
@@ -168,11 +172,6 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
             Neumorphic(
               margin: const EdgeInsets.all(1),
               padding: const EdgeInsets.all(30),
-              /**
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blueAccent),
-                  borderRadius: const BorderRadius.all(Radius.circular(10))),
-               */
               child: BlocBuilder<CurrentDateBloc, CurrentDateBlocState>(
                 builder: (context, state) {
                   return CalendarTimeline(
@@ -277,8 +276,9 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    builder: (context) {
-                      return const PickMealWidget(MealType.breakfast);
+                    builder: (c) {
+                      return _buildMealPickerWidget(
+                          c, MealType.breakfast, widget.mealsRepository);
                     },
                   )
                 }),
@@ -299,8 +299,9 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    builder: (context) {
-                      return const PickMealWidget(MealType.lunch);
+                    builder: (c) {
+                      return _buildMealPickerWidget(
+                          c, MealType.lunch, widget.mealsRepository);
                     },
                   )
                 }),
@@ -321,8 +322,9 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    builder: (context) {
-                      return const PickMealWidget(MealType.dinner);
+                    builder: (c) {
+                      return _buildMealPickerWidget(
+                          c, MealType.dinner, widget.mealsRepository);
                     },
                   )
                 }),
@@ -343,8 +345,9 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    builder: (context) {
-                      return const PickMealWidget(MealType.snack);
+                    builder: (c) {
+                      return _buildMealPickerWidget(
+                          c, MealType.snack, widget.mealsRepository);
                     },
                   )
                 }),
@@ -365,8 +368,9 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
                     backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    builder: (context) {
-                      return const PickMealWidget(MealType.scanner);
+                    builder: (c) {
+                      return _buildMealPickerWidget(
+                          c, null, widget.mealsRepository);
                     },
                   )
                 }),
@@ -466,21 +470,31 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Meal(
+              MealDisplay(
                   name: 'Frühstück',
                   phe: state.summary.getProteinPerMealType(MealType.breakfast)),
-              Meal(
+              MealDisplay(
                   name: 'Mittag',
                   phe: state.summary.getProteinPerMealType(MealType.lunch)),
-              Meal(
+              MealDisplay(
                   name: 'Abend',
                   phe: state.summary.getProteinPerMealType(MealType.dinner)),
-              Meal(
+              MealDisplay(
                   name: 'Snacks',
                   phe: state.summary.getProteinPerMealType(MealType.snack)),
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildMealPickerWidget(
+      var c, MealType? mealType, MealsRepository mealsRepository) {
+    return BlocProvider(
+      create: (c) => MealBloc(mealsRepository),
+      child: PickMealWidget(
+        mealType: mealType,
       ),
     );
   }

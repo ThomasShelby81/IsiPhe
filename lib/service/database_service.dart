@@ -13,7 +13,7 @@ class DatabaseService {
     int year = DateTime.parse(date).year;
 
     List<Meal> meals = querySnapshot.docs
-        .map((e) => Meal.fromDocumentSnapshot(e))
+        .map((e) => Meal.fromFirestore(e, SnapshotOptions()))
         .where((e) =>
             e.date.day == day && e.date.month == month && e.date.year == year)
         .toList();
@@ -36,12 +36,17 @@ class DatabaseService {
 
     Stream<List<Meal>> stream = snapshots.map((snapshot) {
       final result = snapshot.docs
-          .map((element) => Meal.fromDocumentSnapshot(
-              element as DocumentSnapshot<Map<String, dynamic>>))
+          .map((element) => Meal.fromFirestore(
+              element as DocumentSnapshot<Map<String, dynamic>>,
+              SnapshotOptions()))
           .toList();
       return result;
     });
 
     return stream;
+  }
+
+  Future<DocumentReference<Map<String, dynamic>>> writeMeal(Meal meal) async {
+    return await _db.collection('meals').add(meal.toFirestore());
   }
 }
