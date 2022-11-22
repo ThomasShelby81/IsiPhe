@@ -2,16 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:isiphe/repository/meals_repository.dart';
-import 'package:isiphe/repository/user_repository.dart';
-import 'package:isiphe/screens/dashboard.dart';
-import 'package:isiphe/screens/login/login_screen.dart';
-import 'package:isiphe/service/database_service.dart';
+import 'package:isiphe/data/repository/meals_repository.dart';
+import 'package:isiphe/data/repository/user_repository.dart';
+import 'package:isiphe/ui/pages/dashboard/dashboard_page.dart';
+import 'package:isiphe/ui/screens/login/login_screen.dart';
+import 'package:isiphe/data/service/database_service.dart';
 
-import 'bloc/authentication_bloc/authentication_bloc.dart';
-import 'bloc/currentdate_bloc/currentdate_bloc_bloc.dart';
-import 'bloc/meal_bloc/bloc/meal_bloc.dart';
-import 'bloc/simple_bloc_observer.dart';
+import 'business/bloc/authentication_bloc/authentication_bloc.dart';
+import 'business/bloc/currentdate_bloc/currentdate_bloc_bloc.dart';
+import 'business/bloc/meal_bloc/bloc/meal_bloc.dart';
+import 'business/bloc/simple_bloc_observer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
                     create: (context) => CurrentDateBloc(_mealsRepository)),
                 BlocProvider(create: (context) => MealBloc(_mealsRepository)),
               ],
-              child: Dashboard(
+              child: DashboardPage(
                 user: state.user,
                 mealsRepository: _mealsRepository,
               ),

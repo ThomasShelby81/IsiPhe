@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:isiphe/enum/meal_type.dart';
+import 'package:isiphe/model/enum/meal_type.dart';
 
 class Meal extends Equatable {
   final String id;
