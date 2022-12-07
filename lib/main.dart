@@ -2,10 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:isiphe/data/repository/food_repository.dart';
 import 'package:isiphe/data/repository/meals_repository.dart';
 import 'package:isiphe/data/repository/user_repository.dart';
 import 'package:isiphe/ui/pages/dashboard/dashboard_page.dart';
-import 'package:isiphe/ui/screens/login/login_screen.dart';
+import 'package:isiphe/ui/pages/login/login_page.dart';
 import 'package:isiphe/data/service/database_service.dart';
 
 import 'business/bloc/authentication_bloc/authentication_bloc.dart';
@@ -21,6 +22,7 @@ Future<void> main() async {
 
   var userRepository = UserRepository();
   var mealsRepository = MealsRepositoryImpl(databaseService);
+  var foodRepository = FoodRepositoryImpl(databaseService);
 
   BlocOverrides.runZoned(
       () => runApp(MultiBlocProvider(
@@ -32,26 +34,30 @@ Future<void> main() async {
                   child: MyApp(
                     userRepository: userRepository,
                     mealsRepository: mealsRepository,
+                    foodRepository: foodRepository,
                   ),
                 ),
               ],
               child: MyApp(
-                userRepository: userRepository,
-                mealsRepository: mealsRepository,
-              ))),
+                  userRepository: userRepository,
+                  mealsRepository: mealsRepository,
+                  foodRepository: foodRepository))),
       blocObserver: SimpleBlocObserver());
 }
 
 class MyApp extends StatelessWidget {
   final UserRepository _userRepository;
   final MealsRepository _mealsRepository;
+  final FoodRepository _foodRepository;
 
   const MyApp(
       {Key? key,
       required UserRepository userRepository,
-      required MealsRepository mealsRepository})
+      required MealsRepository mealsRepository,
+      required FoodRepository foodRepository})
       : _userRepository = userRepository,
         _mealsRepository = mealsRepository,
+        _foodRepository = foodRepository,
         super(key: key);
 
   @override
@@ -88,7 +94,7 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationFailure || state is AuthenticationLogout) {
-            return LoginScreen(userRepository: _userRepository);
+            return LoginPage(userRepository: _userRepository);
           }
           if (state is AuthenticationSuccess) {
             return MultiBlocProvider(
@@ -100,6 +106,7 @@ class MyApp extends StatelessWidget {
               child: DashboardPage(
                 user: state.user,
                 mealsRepository: _mealsRepository,
+                foodRepository: _foodRepository,
               ),
             );
           }

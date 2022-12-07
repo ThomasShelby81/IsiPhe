@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 
-import 'edit_food_details_screen.dart';
+import '../../../data/repository/food_repository.dart';
+import '../../pages/food/food_edit_details_page.dart';
 
 class FoodScreen extends StatefulWidget {
-  const FoodScreen({Key? key}) : super(key: key);
+  final FoodRepository foodRepository;
+
+  const FoodScreen({Key? key, required this.foodRepository}) : super(key: key);
 
   @override
   _FoodScreenState createState() {
@@ -12,7 +15,7 @@ class FoodScreen extends StatefulWidget {
   }
 }
 
-class _FoodScreenState extends State {
+class _FoodScreenState extends State<FoodScreen> {
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -60,8 +63,6 @@ class _FoodScreenState extends State {
                       child: CupertinoSearchTextField(
                         placeholder: 'Suche',
                         controller: _controller,
-                        onChanged: (value) => print(value),
-                        onSubmitted: (value) => print(value),
                         autocorrect: true,
                       ),
                     ),
@@ -122,8 +123,6 @@ class _FoodScreenState extends State {
                       child: CupertinoSearchTextField(
                         placeholder: 'Suche',
                         controller: _controller,
-                        onChanged: (value) => print(value),
-                        onSubmitted: (value) => print(value),
                         autocorrect: true,
                       )),
                   Padding(
@@ -141,8 +140,9 @@ class _FoodScreenState extends State {
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const EditFoodDetailsScreen())),
+                              builder: (context) => FoodEditDetailsPage(
+                                    foodRepository: widget.foodRepository,
+                                  ))),
                     ),
                   ),
                   Padding(

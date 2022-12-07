@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isiphe/ui/routes/widgets/gradient_button.dart';
 
-import '../../../business/bloc/authentication_bloc/authentication_bloc.dart';
-import '../../../business/bloc/register_bloc/register_bloc.dart';
+import '../../../../business/bloc/authentication_bloc/authentication_bloc.dart';
+import '../../../../business/bloc/register_bloc/register_bloc.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key? key}) : super(key: key);

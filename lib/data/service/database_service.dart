@@ -1,27 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:isiphe/model/food.dart';
 
 import '../../model/meal.dart';
 
 class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-
-/**
-  Future<List<Meal>> retrieveMealsPerDay(String date) async {
-    var querySnapshot = await _db.collection('meals').get();
-
-    int day = DateTime.parse(date).day;
-    int month = DateTime.parse(date).month;
-    int year = DateTime.parse(date).year;
-
-    List<Meal> meals = querySnapshot.docs
-        .map((e) => Meal.fromFirestore(e, SnapshotOptions()))
-        .where((e) =>
-            e.date.day == day && e.date.month == month && e.date.year == year)
-        .toList();
-
-    return meals;
-  }
-*/
 
   Future<List<Meal>> retrieveMealsPerDay(
       DateTime lowerDate, DateTime higherDate) {
@@ -56,33 +44,31 @@ class DatabaseService {
     return stream;
   }
 
-/**
-  Stream<List<Meal>> retrieveStreamMealsPerDay(DateTime date) {
-    DateTime fromDate = date;
-    DateTime toDate =
-        date.add(const Duration(hours: 23, minutes: 59, seconds: 59));
-
-    date = date.subtract(const Duration(days: 1));
-    Query query = _db
-        .collection('meals')
-        .where("date", isGreaterThanOrEqualTo: fromDate)
-        .where("date", isLessThanOrEqualTo: toDate);
-
-    final Stream<QuerySnapshot> snapshots = query.snapshots();
-
-    Stream<List<Meal>> stream = snapshots.map((snapshot) {
-      final result = snapshot.docs
-          .map((element) => Meal.fromFirestore(
-              element as DocumentSnapshot<Map<String, dynamic>>,
-              SnapshotOptions()))
-          .toList();
-      return result;
-    });
-
-    return stream;
-  }
- */
   Future<DocumentReference<Map<String, dynamic>>> writeMeal(Meal meal) async {
     return await _db.collection('meals').add(meal.toFirestore());
+  }
+
+  Future<String> uploadImage(XFile image) async {
+    final path = 'foods/${image.name}';
+    final file = File(image.path);
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    final UploadTask uploadTask = ref.putFile(file);
+    final snapshot = await uploadTask
+        .whenComplete(() => {debugPrint('Upload Image $path complete.')});
+    return snapshot.ref.getDownloadURL();
+  }
+
+  Future<DocumentReference<Map<String, dynamic>>> writeFood(Food food) async {
+    String? imageUrl;
+    if (food.image != null) {
+      imageUrl = await uploadImage(food.image!);
+
+      debugPrint('Uploaded URL for image ${food.image!.name} is $imageUrl.');
+    }
+
+    return await _db
+        .collection('foods')
+        .add(food.toFirestore(imageUrl: imageUrl ?? ''));
   }
 }

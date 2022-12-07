@@ -31,19 +31,26 @@ class AppHeader extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.menu,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               )),
-          const Positioned(
+          Positioned(
             top: 35,
             right: 40,
-            child: CircleAvatar(
-              minRadius: 25,
-              maxRadius: 25,
-              /**
-              foregroundImage: NetworkImage(
-                  'https://static.wikia.nocookie.net/disney/images/7/78/180px-A4cf53e959.png/revision/latest/scale-to-width-down/360?cb=20140828162139&path-prefix=de'),
-              */
+            child: GestureDetector(
+              child: const CircleAvatar(
+                minRadius: 25,
+                maxRadius: 25,
+                /**
+                foregroundImage: NetworkImage(
+                    'https://static.wikia.nocookie.net/disney/images/7/78/180px-A4cf53e959.png/revision/latest/scale-to-width-down/360?cb=20140828162139&path-prefix=de'),
+                */
+              ),
+              onDoubleTap: () {
+                context
+                    .read<AuthenticationBloc>()
+                    .add(AuthenticationLoggedOut());
+              },
             ),
           ),
           Positioned(

@@ -44,8 +44,12 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-<string>Bitte schalte die Kamera frei.</string>
-<key>io.flutter.embedded_views_preview</key>
-<string>YES</string>
+	<string>Bitte schalte die Kamera frei.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Bitte schalte den Zugriff auf die Foto-Galerie frei</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Bitte schalte den Zugriff auf das Mikrophon frei</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 </dict>
 </plist>

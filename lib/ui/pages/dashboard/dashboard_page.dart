@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isiphe/data/repository/food_repository.dart';
 import 'package:isiphe/ui/pages/dashboard/widget/app_header.dart';
 import 'package:isiphe/ui/pages/dashboard/widget/date_selector.dart';
 import 'package:isiphe/ui/pages/dashboard/widget/graph.dart';
@@ -14,10 +15,14 @@ import '../../../data/repository/meals_repository.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage(
-      {Key? key, required this.user, required this.mealsRepository})
+      {Key? key,
+      required this.user,
+      required this.mealsRepository,
+      required this.foodRepository})
       : super(key: key);
 
   final MealsRepository mealsRepository;
+  final FoodRepository foodRepository;
   final User user;
 
   @override
@@ -49,7 +54,7 @@ class _DashboardPage extends State<DashboardPage> {
         const SizedBox(
           height: 40,
         ),
-        DateSelector(),
+        const DateSelector(),
         const SizedBox(
           height: 100,
         )
@@ -61,8 +66,12 @@ class _DashboardPage extends State<DashboardPage> {
       bottomNavigationBar: BottomNavigationBar(
           onTap: (value) {
             if (value == 0) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const FoodScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FoodScreen(
+                            foodRepository: widget.foodRepository,
+                          )));
             }
           },
           items: const <BottomNavigationBarItem>[

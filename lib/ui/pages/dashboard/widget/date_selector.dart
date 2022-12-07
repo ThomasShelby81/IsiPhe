@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../business/bloc/currentdate_bloc/currentdate_bloc_bloc.dart';
 
 class DateSelector extends StatelessWidget {
+  const DateSelector({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(

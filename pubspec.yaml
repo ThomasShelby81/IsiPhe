@@ -29,12 +29,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^1.10.0
-  firebase_auth: ^3.2.0
-  firebase_analytics: ^8.3.4
-  cloud_firestore: ^3.1.0
-  flutter_bloc: ^8.0.1
-  equatable: ^2.0.3
+  firebase_core: ^2.3.0
+  firebase_auth: ^4.1.5
+  firebase_analytics: ^10.0.6
+  firebase_storage: ^11.0.6
+  cloud_firestore: ^4.1.0
+  flutter_bloc: ^8.1.1
+  equatable: ^2.0.5
   scan: ^1.6.0
 
   # The following adds the Cupertino Icons font to your application.pub 
@@ -48,6 +49,7 @@ dependencies:
   flutter_neumorphic_null_safety: ^3.2.4
   percent_indicator: ^4.2.2
   optional: ^6.1.0+1
+  image_picker: ^0.8.6
   
 
 dev_dependencies:
@@ -88,7 +90,26 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: fonts/CustomIcons.ttf
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+        - asset: fonts/Roboto-Thin.ttf
+          weight: 100
+        - asset: fonts/Roboto-Light.ttf
+          weight: 300
+        - asset: fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: fonts/Roboto-Bold.ttf
+          weight: 700
+        - asset: fonts/Roboto-Black.ttf
+          weight: 900
+  #  - family:  CustomIcons
+  #    fonts:
+  #     - asset: fonts/CustomIcons.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
@@ -102,3 +123,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+

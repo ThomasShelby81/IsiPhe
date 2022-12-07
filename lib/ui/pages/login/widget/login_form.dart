@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isiphe/ui/screens/register/register_screen.dart';
+import 'package:isiphe/ui/pages/register/register_page.dart';
 import 'package:isiphe/ui/routes/widgets/gradient_button.dart';
 
-import '../../../business/bloc/authentication_bloc/authentication_bloc.dart';
-import '../../../business/bloc/login_bloc/login_bloc.dart';
-import '../../../data/repository/user_repository.dart';
+import '../../../../business/bloc/authentication_bloc/authentication_bloc.dart';
+import '../../../../business/bloc/login_bloc/login_bloc.dart';
+import '../../../../data/repository/user_repository.dart';
 
 class LoginForm extends StatefulWidget {
   final UserRepository _userRepository;
@@ -142,7 +142,7 @@ class _LoginFormState extends State<LoginForm> {
                     height: 45,
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return RegisterScreen(
+                        return RegisterPage(
                             userRepository: widget._userRepository);
                       }));
                     },

@@ -108,25 +108,9 @@ class _PickMealWidget extends State<PickMealWidget> {
                         height: 20,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: widget.mealType != null
-                            ? Text(widget.mealType.displayTitle,
-                                style: const TextStyle(fontSize: 20))
-                            : DropdownButton<MealType>(
-                                value: Optional.ofNullable(_dropDownValue)
-                                    .orElse(MealType.snack),
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                items: MealType.values.map((MealType t) {
-                                  return DropdownMenuItem<MealType>(
-                                      child: Text(t.displayTitle), value: t);
-                                }).toList(),
-                                onChanged: ((value) {
-                                  setState(() {
-                                    _dropDownValue = Optional.ofNullable(value)
-                                        .orElse(MealType.snack);
-                                  });
-                                })),
-                      ),
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text(widget.mealType.displayTitle,
+                              style: const TextStyle(fontSize: 20))),
                       const SizedBox(
                         height: 50,
                       ),

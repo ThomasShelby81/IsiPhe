@@ -4,12 +4,12 @@ import 'package:isiphe/ui/routes/widgets/curved_widget.dart';
 
 import '../../../business/bloc/login_bloc/login_bloc.dart';
 import '../../../data/repository/user_repository.dart';
-import 'login_form.dart';
+import 'widget/login_form.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginPage extends StatelessWidget {
   final UserRepository _userRepository;
 
-  const LoginScreen({Key? key, required UserRepository userRepository})
+  const LoginPage({Key? key, required UserRepository userRepository})
       : _userRepository = userRepository,
         super(key: key);
 

@@ -26,10 +26,6 @@ class MealsRepositoryImpl implements MealsRepository {
 }
 
 abstract class MealsRepository {
-  //Future<List<Meal>> readMealsPerDate(DateTime date);
-
-  //Stream<List<Meal>> readMealsStreamPerDate(DateTime date);
-
   Future<List<Meal>> readMealsPerDate(DateTime lowerDate, DateTime higherDate);
 
   Stream<List<Meal>> readMealsStreamPerDate(

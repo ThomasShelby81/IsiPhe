@@ -8,7 +8,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:isiphe/model/enum/meal_type.dart';
 import 'package:isiphe/data/repository/meals_repository.dart';
-import 'package:isiphe/ui/screens/food/food_screen.dart';
 import 'package:isiphe/ui/routes/widgets/meal.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -386,8 +385,8 @@ class _Dashboard extends State<Dashboard> with TickerProviderStateMixin {
       bottomNavigationBar: BottomNavigationBar(
           onTap: (value) {
             if (value == 0) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const FoodScreen()));
+              //Navigator.push(context,
+              //    MaterialPageRoute(builder: (context) => const FoodScreen()));
             }
           },
           items: const <BottomNavigationBarItem>[

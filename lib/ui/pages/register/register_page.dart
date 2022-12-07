@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isiphe/ui/screens/register/register_form.dart';
+import 'package:isiphe/ui/pages/register/widget/register_form.dart';
 import 'package:isiphe/ui/routes/widgets/curved_widget.dart';
 
 import '../../../business/bloc/register_bloc/register_bloc.dart';
 import '../../../data/repository/user_repository.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterPage extends StatelessWidget {
   final UserRepository _userRepository;
 
-  const RegisterScreen({Key? key, required UserRepository userRepository})
+  const RegisterPage({Key? key, required UserRepository userRepository})
       : _userRepository = userRepository,
         super(key: key);
 
