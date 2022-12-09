@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isiphe/ui/pages/food/widget/food_edit_foto.dart';
+import 'package:isiphe/ui/pages/food_details/widget/food_edit_foto.dart';
 
 class FoodEditDetailsPageThree extends StatefulWidget {
   const FoodEditDetailsPageThree({Key? key}) : super(key: key);

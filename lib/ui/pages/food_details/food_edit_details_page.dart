@@ -2,9 +2,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:isiphe/data/repository/food_repository.dart';
-import 'package:isiphe/ui/pages/food/widget/food_edit_details_page_three.dart';
-import 'package:isiphe/ui/pages/food/widget/food_edit_details_page_two.dart';
-import 'package:isiphe/ui/pages/food/widget/food_edit_details_page_one_nutritional_values.dart';
+import 'package:isiphe/ui/pages/food_details/widget/food_edit_details_page_three.dart';
+import 'package:isiphe/ui/pages/food_details/widget/food_edit_details_page_two.dart';
+import 'package:isiphe/ui/pages/food_details/widget/food_edit_details_page_one_nutritional_values.dart';
 
 import '../../../business/bloc/food_details_bloc/bloc/food_details_bloc.dart';
 import '../../routes/widgets/dots_indicator.dart';
@@ -72,7 +72,7 @@ class _FoodEditDetailsPageState extends State<FoodEditDetailsPage> {
               alignment: Alignment.center,
               padding: const EdgeInsets.only(right: 16),
               child: GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
+                onTap: () => Navigator.of(context).pop(true),
                 child: const Text('Speichern',
                     style: TextStyle(color: Colors.black)),
               ),
@@ -126,7 +126,7 @@ class _FoodEditDetailsPageState extends State<FoodEditDetailsPage> {
                         onPressed: () {
                           if (isLastPage()) {
                             _foodDetailsBloc.add(FoodDetailsSaved());
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pop(true);
                           } else {
                             _foodDetailsBloc
                                 .add(const FoodDetailsButtonNextPressed());

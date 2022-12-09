@@ -6,10 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:isiphe/data/repository/food_repository.dart';
 import 'package:isiphe/model/enum/serving_size.dart';
+import 'package:isiphe/model/food_type.dart';
 import 'package:isiphe/model/serving_size.dart';
 import 'package:optional/optional.dart';
-
-import '../../../../model/food.dart';
 
 part 'food_details_event.dart';
 part 'food_details_state.dart';
@@ -114,14 +113,14 @@ class FoodDetailsBloc extends Bloc<FoodDetailsEvent, FoodDetailsState> {
   FutureOr<void> _foodDetailsSaved(
       FoodDetailsSaved event, Emitter<FoodDetailsState> emit) {
     _foodRepository.writeFood(
-      Food(
+      FoodType(
           protein: state.protein,
           fat: state.fat,
           sugar: state.sugar,
           barcode: state.barcode,
           name: state.name,
           image: state.imageFile,
-          servingSizes: state.servingSizes,
+          servingSizes: state.servingSizesSelected,
           vendor: state.vendor),
     );
   }

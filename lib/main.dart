@@ -24,25 +24,25 @@ Future<void> main() async {
   var mealsRepository = MealsRepositoryImpl(databaseService);
   var foodRepository = FoodRepositoryImpl(databaseService);
 
-  BlocOverrides.runZoned(
-      () => runApp(MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => AuthenticationBloc(
-                    userRepository: UserRepository(),
-                  )..add(AuthenticationStarted()),
-                  child: MyApp(
-                    userRepository: userRepository,
-                    mealsRepository: mealsRepository,
-                    foodRepository: foodRepository,
-                  ),
-                ),
-              ],
-              child: MyApp(
-                  userRepository: userRepository,
-                  mealsRepository: mealsRepository,
-                  foodRepository: foodRepository))),
-      blocObserver: SimpleBlocObserver());
+  Bloc.observer = SimpleBlocObserver();
+
+  runApp(MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthenticationBloc(
+            userRepository: UserRepository(),
+          )..add(AuthenticationStarted()),
+          child: MyApp(
+            userRepository: userRepository,
+            mealsRepository: mealsRepository,
+            foodRepository: foodRepository,
+          ),
+        ),
+      ],
+      child: MyApp(
+          userRepository: userRepository,
+          mealsRepository: mealsRepository,
+          foodRepository: foodRepository)));
 }
 
 class MyApp extends StatelessWidget {

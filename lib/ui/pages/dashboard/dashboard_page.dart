@@ -8,7 +8,7 @@ import 'package:isiphe/ui/pages/dashboard/widget/graph.dart';
 import 'package:isiphe/ui/pages/dashboard/widget/info.dart';
 import 'package:isiphe/ui/pages/dashboard/widget/mealtype_action_button.dart';
 import 'package:isiphe/ui/pages/dashboard/widget/stats.dart';
-import 'package:isiphe/ui/screens/food/food_screen.dart';
+import 'package:isiphe/ui/pages/food/food_page.dart';
 
 import '../../../business/bloc/currentdate_bloc/currentdate_bloc_bloc.dart';
 import '../../../data/repository/meals_repository.dart';
@@ -69,7 +69,7 @@ class _DashboardPage extends State<DashboardPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FoodScreen(
+                      builder: (context) => FoodPage(
                             foodRepository: widget.foodRepository,
                           )));
             }

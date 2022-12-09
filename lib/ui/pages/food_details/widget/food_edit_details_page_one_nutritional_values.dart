@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'food_edit_details_barcode_detector.dart';
-import 'food_edit_details_page_one nutritional_values_form.dart';
+import 'food_edit_details_page_one_nutritional_values_form.dart';
 
 class FoodEditDetailsPageOneNutritionalValues extends StatefulWidget {
   const FoodEditDetailsPageOneNutritionalValues({Key? key}) : super(key: key);

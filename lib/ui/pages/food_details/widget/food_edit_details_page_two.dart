@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isiphe/ui/pages/food/widget/food_edit_details_page_two_form.dart';
+import 'package:isiphe/ui/pages/food_details/widget/food_edit_details_page_two_form.dart';
 
 import 'food_edit_details_page_two_serving_sizes.dart';
 
